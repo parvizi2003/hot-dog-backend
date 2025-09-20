@@ -1,11 +1,11 @@
 import clsx from 'clsx';
-import React from 'react';
+import React, { ReactNode } from 'react';
 type TitleSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';
 
 interface Props {
     size?: TitleSize;
     className?: string;
-    text: string | any;
+    text: ReactNode;
 }
 
 export const Title: React.FC<Props> = ({ text, size = 'sm', className }) => {

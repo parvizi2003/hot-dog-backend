@@ -11,16 +11,6 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 export default function ShowOrder({ data }: { data: OrderWithItems }) {
-    console.log(data);
-    const exampleData = {
-        id: 1,
-        user_id: 1,
-        user_name: 'John Doe',
-        total: 25.5,
-        status: 'pending',
-        address: '123 Main St, City, Country',
-        phone_number: '123-456-7890',
-    };
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Orders" />

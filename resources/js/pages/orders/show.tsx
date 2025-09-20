@@ -1,0 +1,30 @@
+import AppLayout from '@/layouts/app-layout';
+import orders from '@/routes/orders';
+import { OrderWithItems, type BreadcrumbItem } from '@/types';
+import { Head } from '@inertiajs/react';
+
+const breadcrumbs: BreadcrumbItem[] = [
+    {
+        title: 'Orders',
+        href: orders.index.url(),
+    },
+];
+
+export default function ShowOrder({ data }: { data: OrderWithItems }) {
+    console.log(data);
+    const exampleData = {
+        id: 1,
+        user_id: 1,
+        user_name: 'John Doe',
+        total: 25.5,
+        status: 'pending',
+        address: '123 Main St, City, Country',
+        phone_number: '123-456-7890',
+    };
+    return (
+        <AppLayout breadcrumbs={breadcrumbs}>
+            <Head title="Orders" />
+            <div className="h-full flex-1 overflow-x-auto rounded-xl p-4"></div>
+        </AppLayout>
+    );
+}

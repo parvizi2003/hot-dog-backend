@@ -31,7 +31,7 @@ export interface SharedData {
 }
 
 export interface User {
-    id: string;
+    id: number;
     name?: string;
     email?: string;
     avatar?: string;
@@ -48,6 +48,9 @@ export interface PaginatedData<T> {
     data: T[];
     next_page_url: string | null;
     prev_page_url: string | null;
+    total: number;
+    from: number;
+    to: number;
 }
 
 export interface Order {
@@ -82,6 +85,7 @@ export interface Category {
     id: number;
     name: string;
     slug: string;
+    image_url: string;
     created_at: string;
     updated_at: string;
 }
@@ -90,23 +94,14 @@ export interface Product {
     id: number;
     category_id: number;
     name: string;
+    price: number;
     slug: string;
+    image_url: string;
     description: string;
     created_at: string;
     updated_at: string;
 }
 
-export interface ProductItem {
-    id: number;
-    product_id: number;
-    image_url: string;
-    price: number;
-    size: number;
-    pizza_type: string;
-    in_stock: number;
-    created_at: string;
-    updated_at: string;
-}
-export interface ProductWithItems extends Product {
-    items: ProductItem[];
+export interface ProductWithCategory extends Product {
+    category: Category;
 }

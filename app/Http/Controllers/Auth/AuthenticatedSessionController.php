@@ -29,12 +29,22 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
-        $request->authenticate();
+        $request->authenticate(); // Проверяет email + пароль
 
+        // Пользователь аутентифицирован, теперь проверяем роль
+        if (Auth::user()->role !== 'ADMIN') {
+            Auth::logout(); // Разлогиниваем
+            return redirect()->back()->withErrors([
+                'email' => 'You do not have access to the admin panel.',
+            ]);
+        }
+
+        // Всё ок, админ
         $request->session()->regenerate();
 
         return redirect()->intended(route('dashboard', absolute: false));
     }
+
 
     /**
      * Destroy an authenticated session.

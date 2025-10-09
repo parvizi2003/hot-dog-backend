@@ -6,10 +6,11 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import AppLayout from '@/layouts/app-layout';
+import { cn } from '@/lib/utils';
 import products from '@/routes/products';
 import { Category, type BreadcrumbItem } from '@/types';
 import { Head, useForm } from '@inertiajs/react';
-import { FormEventHandler } from 'react';
+import { FormEventHandler, useState } from 'react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -22,33 +23,56 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-interface ProductForm {
-    category_id: string;
-    name: string;
-    image: string;
-    price: number;
-    description: string;
-}
-
 export default function CreateProduct({ categories }: { categories: Category[] }) {
-    const { data, setData, post, processing, errors } = useForm<Required<ProductForm>>({
+    const { data, setData, post, processing, errors } = useForm<{
+        category_id: string;
+        name: string;
+        image: File | null;
+        price: number;
+        description: string;
+    }>({
         category_id: '',
         name: '',
-        image: '',
+        image: null,
         price: 0,
         description: '',
     });
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
+
+        // Создаем FormData вручную, т.к. есть файл
+        const formData = new FormData();
+        formData.append('category_id', data.category_id);
+        formData.append('name', data.name);
+        if (data.image) formData.append('image', data.image);
+        formData.append('price', data.price.toString());
+        formData.append('description', data.description);
+        console.log(data);
         post(products.store.url());
+    };
+
+    const [imagePreview, setImagePreview] = useState<string | null>(null);
+    const [imageFile, setImageFile] = useState<File | null>(null);
+
+    const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            setImageFile(file);
+            setImagePreview(URL.createObjectURL(file));
+            setData('image', file);
+        }
+    };
+
+    const handleImageClick = () => {
+        document.getElementById('image')?.click();
     };
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Create Product" />
             <div className="flex h-full flex-1 items-center justify-center">
-                <Card className="w-fit">
+                <Card>
                     <CardHeader>
                         <CardTitle>Create a new product</CardTitle>
                         <CardDescription>New product will appear in system</CardDescription>
@@ -75,7 +99,6 @@ export default function CreateProduct({ categories }: { categories: Category[] }
                                     </Select>
                                     <InputError message={errors.category_id} />
                                 </div>
-
                                 <div className="grid gap-2">
                                     <Label htmlFor="name">Product name</Label>
                                     <Input
@@ -93,16 +116,26 @@ export default function CreateProduct({ categories }: { categories: Category[] }
 
                                 <div className="grid gap-2">
                                     <Label htmlFor="image">Product image URL</Label>
-                                    <Input
-                                        id="image"
-                                        type="file"
-                                        name="image"
-                                        required
-                                        tabIndex={3}
-                                        value={data.image}
-                                        onChange={(e) => setData('image', e.target.value)}
-                                        className="h-[150px]"
-                                    />
+                                    <div className="h-[150px]">
+                                        {imagePreview && (
+                                            <img
+                                                src={imagePreview}
+                                                alt="Category Image Preview"
+                                                className="h-full w-full cursor-pointer rounded-xl border object-contain"
+                                                onClick={handleImageClick}
+                                            />
+                                        )}
+                                        <Input
+                                            id="image"
+                                            type="file"
+                                            name="image"
+                                            required
+                                            tabIndex={3}
+                                            onChange={handleImageChange}
+                                            className={cn('h-full', imagePreview && 'hidden')}
+                                        />
+                                    </div>
+
                                     <InputError message={errors.image} />
                                 </div>
 

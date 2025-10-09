@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Enums\UserRoleEnum;
 use App\Models\Cart;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -16,12 +17,10 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         $user = User::create([
-            'name' => 'Qurbon',
-            'email' => 'qurbon@gmail.com',
+            'name' => 'Admin',
+            'email' => 'admin@gmail.com',
             'password' => Hash::make('123123123'),
-        ]);
-        Cart::create([
-            'user_id' => $user->id,
+            'role' => UserRoleEnum::ADMIN,
         ]);
     }
 }

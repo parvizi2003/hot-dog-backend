@@ -24,6 +24,11 @@ class CartController extends Controller
 
     public function addToCart(Product $product, Request $request)
     {
+        $validated = $request->validate([
+            'count' => 'required|integer|min:1',
+        ]);
+        $count = $validated['count'];
+
         $cart = $this->getCart($request);
 
         $cartItem = $cart->items()->where('product_id', $product->id)->first();
@@ -31,11 +36,11 @@ class CartController extends Controller
         if (!$cartItem) {
             $cartItem = $cart->items()->create([
                 'product_id' => $product->id,
-                'count' => 1,
-                'total' => $product->price,
+                'count' => $count,
+                'total' => $product->price * $count,
             ]);
         } else {
-            $cartItem->count++;
+            $cartItem->count += $count;
             $cartItem->total = $cartItem->count * $product->price;
             $cartItem->save();
         }
@@ -44,6 +49,7 @@ class CartController extends Controller
 
         return ['message' => 'Product added to cart successfully'];
     }
+
 
     public function clear(Request $request)
     {

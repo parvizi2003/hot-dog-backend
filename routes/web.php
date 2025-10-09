@@ -3,22 +3,29 @@
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
-use App\Models\Category;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::get('/', function () {
-    return redirect()->route('dashboard');
-})->name('home');
 
-Route::get('/test', function () {
-    return Inertia::render('test', ['data' => Category::paginate(10)]);
-})->name('test');
+Route::middleware(['auth'])->group(function () {
+    Route::get('/', function () {
+        return redirect()->route('dashboard');
+    })->name('home');
 
-Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('dashboard', function () {
+    Route::get('/dashboard', function () {
         return Inertia::render('dashboard');
     })->name('dashboard');
+
+    Route::controller(UserController::class)->prefix('users')->name('users.')->group(function () {
+        Route::get('/',              'index')->name('index');
+        Route::get('/create',        'create')->name('create');
+        Route::post('/',             'store')->name('store');
+        Route::get('/{user}',       'show')->name('show');
+        Route::get('/{user}/edit',  'edit')->name('edit');
+        Route::put('/{user}',       'update')->name('update');
+        Route::delete('/{user}',    'destroy')->name('destroy');
+    });
 
     Route::controller(OrderController::class)->prefix('orders')->name('orders.')->group(function () {
         Route::get('/',              'index')->name('index');
@@ -36,18 +43,18 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/',             'store')->name('store');
         Route::get('/{category}',       'show')->name('show');
         Route::get('/{category}/edit',  'edit')->name('edit');
-        Route::put('/{category}',       'update')->name('update');
+        Route::post('/{category}/update',       'update')->name('update');
         Route::delete('/{category}',    'destroy')->name('destroy');
     });
 
     Route::controller(ProductController::class)->prefix('products')->name('products.')->group(function () {
-        Route::get('/',              'index')->name('index');
-        Route::get('/create',        'create')->name('create');
-        Route::post('/',             'store')->name('store');
-        Route::get('/{product}',       'show')->name('show');
-        Route::get('/{product}/edit',  'edit')->name('edit');
-        Route::put('/{product}',       'update')->name('update');
-        Route::delete('/{product}',    'destroy')->name('destroy');
+        Route::get('/', 'index')->name('index');
+        Route::get('/create', 'create')->name('create');
+        Route::post('/', 'store')->name('store');
+        Route::get('/{product}', 'show')->name('show');
+        Route::get('/{product}/edit', 'edit')->name('edit');
+        Route::post('/{product}/update', 'update')->name('update');
+        Route::delete('/{product}', 'destroy')->name('destroy');
     });
 });
 

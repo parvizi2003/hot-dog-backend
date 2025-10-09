@@ -7,9 +7,10 @@ import categories from '@/routes/categories';
 import orders from '@/routes/orders';
 
 import products from '@/routes/products';
+import users from '@/routes/users';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
-import { Apple, LayoutGrid, ReceiptText } from 'lucide-react';
+import { Apple, LayoutGrid, ReceiptText, User } from 'lucide-react';
 import AppLogo from './app-logo';
 
 const mainNavItems: NavItem[] = [
@@ -17,6 +18,11 @@ const mainNavItems: NavItem[] = [
         title: 'Dashboard',
         href: dashboard(),
         icon: LayoutGrid,
+    },
+    {
+        title: 'Users',
+        href: users.index(),
+        icon: User,
     },
     {
         title: 'Orders',

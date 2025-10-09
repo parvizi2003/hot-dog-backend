@@ -1,25 +1,19 @@
 import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import AppLayout from '@/layouts/app-layout';
-import categories from '@/routes/categories';
-import { Category, PaginatedData, type BreadcrumbItem } from '@/types';
+import users from '@/routes/users';
+import { PaginatedData, User } from '@/types';
 import { Head, Link } from '@inertiajs/react';
 
-const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: 'Categories',
-        href: categories.index.url(),
-    },
-];
+const breadcrumbs = [{ title: 'Users', href: users.index.url() }];
 
-export default function Categories({ data }: { data: PaginatedData<Category> }) {
-    console.log(data);
+export default function UsersIndex({ data }: { data: PaginatedData<User> }) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Categories" />
+            <Head title="Users" />
             <div className="flex h-full flex-1 flex-col overflow-x-auto rounded-xl p-4">
                 <div className="mb-4 flex justify-end">
-                    <Link href={categories.create()}>
+                    <Link href={users.create()}>
                         <Button>+ Create New </Button>
                     </Link>
                 </div>
@@ -29,9 +23,10 @@ export default function Categories({ data }: { data: PaginatedData<Category> }) 
                         <TableHeader>
                             <TableRow>
                                 <TableHead>ID</TableHead>
-                                <TableHead>Name</TableHead>
-                                <TableHead>Image</TableHead>
-                                <TableHead></TableHead>
+                                <TableHead>Name </TableHead>
+                                <TableHead>Email</TableHead>
+                                <TableHead>Role</TableHead>
+                                <TableHead className=""></TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -40,13 +35,10 @@ export default function Categories({ data }: { data: PaginatedData<Category> }) 
                                     <TableRow key={item.id}>
                                         <TableCell>{item.id}</TableCell>
                                         <TableCell>{item.name}</TableCell>
-                                        <TableCell>
-                                            <div className="h-9 w-9">
-                                                <img src={`/storage/${item.image_url}`} alt={item.image_url} className="h-full w-full object-cover" />
-                                            </div>
-                                        </TableCell>
+                                        <TableCell>{item.email}</TableCell>
+                                        <TableCell>{item.role}</TableCell>
                                         <TableCell className="flex justify-end">
-                                            <Link href={categories.edit(item.id)} className="my-auto inline-block">
+                                            <Link href={users.edit(item.id)} className="inline-block">
                                                 <Button size="sm">Edit</Button>
                                             </Link>
                                         </TableCell>
@@ -62,6 +54,7 @@ export default function Categories({ data }: { data: PaginatedData<Category> }) 
                         </TableBody>
                     </Table>
                 </div>
+
                 <div className="mt-auto flex items-center justify-end space-x-2 py-4">
                     <div className="flex-1 text-sm text-muted-foreground">
                         from {data.from} to {data.to} of {data.total}

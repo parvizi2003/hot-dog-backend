@@ -17,7 +17,7 @@ export default function Orders({ data }: { data: PaginatedData<Order> }) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Categories" />
-            <div className="h-full flex-1 overflow-x-auto rounded-xl p-4">
+            <div className="flex h-full flex-1 flex-col overflow-x-auto rounded-xl p-4">
                 <div className="overflow-hidden rounded-md border">
                     <Table>
                         <TableHeader>
@@ -29,7 +29,7 @@ export default function Orders({ data }: { data: PaginatedData<Order> }) {
                                 <TableHead>Total</TableHead>
                                 <TableHead>Status</TableHead>
 
-                                <TableHead className="max-w-[100px]"></TableHead>
+                                <TableHead className=""></TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -43,9 +43,9 @@ export default function Orders({ data }: { data: PaginatedData<Order> }) {
                                         <TableCell>{item.total}</TableCell>
                                         <TableCell>{item.status}</TableCell>
 
-                                        <TableCell className="flex w-[100px] justify-end">
+                                        <TableCell className="flex justify-end">
                                             <Link href={orders.edit(item.id)} className="inline-block">
-                                                <Button>Edit</Button>
+                                                <Button size="sm">Edit</Button>
                                             </Link>
                                         </TableCell>
                                     </TableRow>
@@ -59,6 +59,19 @@ export default function Orders({ data }: { data: PaginatedData<Order> }) {
                             )}
                         </TableBody>
                     </Table>
+                </div>
+                <div className="mt-auto flex items-center justify-end space-x-2 py-4">
+                    <div className="flex-1 text-sm text-muted-foreground">
+                        from {data.from} to {data.to} of {data.total}
+                    </div>
+                    <div className="space-x-2">
+                        <Button variant={!data.prev_page_url ? 'default' : 'outline'} size="sm" disabled={!data.prev_page_url}>
+                            <Link href={data.prev_page_url ?? ''}>Previous</Link>
+                        </Button>
+                        <Button variant={!data.next_page_url ? 'default' : 'outline'} size="sm" disabled={!data.next_page_url}>
+                            <Link href={data.next_page_url ?? ''}>Next</Link>
+                        </Button>
+                    </div>
                 </div>
             </div>
         </AppLayout>

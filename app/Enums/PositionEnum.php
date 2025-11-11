@@ -5,9 +5,9 @@ namespace App\Enums;
 
 enum PositionEnum: string
 {
-    case COOK = 'cook';
-    case CASHIER = 'cashier';
-    case COURIER = 'courier';
+    case COOK = 'COOK';
+    case CASHIER = 'CASHIER';
+    case COURIER = 'COURIER';
 
     public static function values(): array
     {

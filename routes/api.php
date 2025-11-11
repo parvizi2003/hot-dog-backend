@@ -6,8 +6,6 @@ use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\OrderController;
 use Illuminate\Support\Facades\Route;
 
-
-
 Route::prefix('auth')->group(function () {
     Route::post('/login', [AuthController::class, 'store']);
     Route::post('/logout', [AuthController::class, 'destroy'])->middleware('auth:sanctum');

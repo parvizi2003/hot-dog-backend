@@ -10,4 +10,9 @@ enum OrderStatusEnum: string
     case DELIVERING = 'DELIVERING';
     case COMPLETED = 'COMPLETED';
     case CANCELLED = 'CANCELLED';
+
+    public static function values(): array
+    {
+        return array_map(fn($status) => $status->value, self::cases());
+    }
 }

@@ -26,6 +26,13 @@ class AuthController extends Controller
             ]);
         }
 
+        if (!in_array($user->role, ['COOK', 'CASHIER'])) {
+            return response()->json([
+                'message' => 'Access denied: you are not allowed to login in this application.',
+            ], 403);
+        }
+
+
         $token = $user->createToken('api-token')->plainTextToken;
 
         return response()->json([

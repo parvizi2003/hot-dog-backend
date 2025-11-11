@@ -21,7 +21,6 @@ return new class extends Migration
             $table->string('password')->nullable();
             $table->string('phone_number')->nullable();
             $table->string('address')->nullable();
-            $table->enum('role', array_column([UserRoleEnum::ADMIN, UserRoleEnum::USER, UserRoleEnum::CASHIER, UserRoleEnum::COOK], 'value'))->default(UserRoleEnum::USER->value)->index();
             $table->rememberToken();
             $table->timestamps();
         });

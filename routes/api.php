@@ -30,5 +30,7 @@ Route::controller(CartController::class)->middleware('auth:sanctum')->prefix('ca
 Route::controller(OrderController::class)->middleware('auth:sanctum')->prefix('orders')->group(function () {
     Route::get('/', 'index');
     Route::post('/store', 'store');
+    Route::get('/cook', 'cookOrders');
+    Route::post('/{order}/accept', 'cookAcceptOrder');
     Route::get('/{order}', 'show');
 });

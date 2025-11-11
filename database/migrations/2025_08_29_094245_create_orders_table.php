@@ -16,27 +16,16 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
 
-            $table->foreignIdFor(User::class)->constrained()->onDelete('set null');
+            $table->foreignIdFor(User::class)->nullable()->constrained()->nullOnDelete();
             $table->string('user_name')->nullable();
             $table->string('address')->nullable();
             $table->string('phone_number')->nullable();
 
             $table->decimal('total', 10, 2)->default(0);
             $table->unsignedInteger('items_count')->default(0);
-            $table
-                ->enum('status', array_column([
-                    OrderStatusEnum::PENDING,
-                    OrderStatusEnum::PREPARING,
-                    OrderStatusEnum::READY,
-                    OrderStatusEnum::DELIVERING,
-                    OrderStatusEnum::COMPLETED,
-                    OrderStatusEnum::CANCELLED,
-                ], 'value'))
-                ->default(OrderStatusEnum::PENDING->value);
-
+            $table->enum('status', OrderStatusEnum::values())->default(OrderStatusEnum::PENDING->value);
 
             $table->timestamps();
-
             $table->index(['user_id', 'status']);
         });
     }

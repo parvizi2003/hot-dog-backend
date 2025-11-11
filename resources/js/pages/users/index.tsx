@@ -8,6 +8,7 @@ import { Head, Link } from '@inertiajs/react';
 const breadcrumbs = [{ title: 'Users', href: users.index.url() }];
 
 export default function UsersIndex({ data }: { data: PaginatedData<User> }) {
+    console.log(data);
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Users" />
@@ -26,7 +27,7 @@ export default function UsersIndex({ data }: { data: PaginatedData<User> }) {
                                 <TableHead>Name </TableHead>
                                 <TableHead>Email</TableHead>
                                 <TableHead>Role</TableHead>
-                                <TableHead className=""></TableHead>
+                                <TableHead></TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -36,7 +37,21 @@ export default function UsersIndex({ data }: { data: PaginatedData<User> }) {
                                         <TableCell>{item.id}</TableCell>
                                         <TableCell>{item.name}</TableCell>
                                         <TableCell>{item.email}</TableCell>
-                                        <TableCell>{item.role}</TableCell>
+                                        <TableCell className="">
+                                            <span
+                                                className={`rounded px-4 py-2 text-center font-medium ${
+                                                    item.role === 'ADMIN'
+                                                        ? 'bg-primary/10 text-primary'
+                                                        : item.role === 'COOK'
+                                                          ? 'bg-blue-50 text-blue-600'
+                                                          : item.role === 'USER'
+                                                            ? 'bg-green-50 text-green-600'
+                                                            : 'text-gray-600'
+                                                }`}
+                                            >
+                                                {item.role}
+                                            </span>
+                                        </TableCell>
                                         <TableCell className="flex justify-end">
                                             <Link href={users.edit(item.id)} className="inline-block">
                                                 <Button size="sm">Edit</Button>

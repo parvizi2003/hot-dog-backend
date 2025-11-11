@@ -11,7 +11,6 @@ const breadcrumbs: BreadcrumbItem[] = [
         href: products.index.url(),
     },
 ];
-
 export default function Products({ data }: { data: PaginatedData<ProductWithCategory> }) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -19,15 +18,15 @@ export default function Products({ data }: { data: PaginatedData<ProductWithCate
             <div className="flex h-full flex-1 flex-col overflow-x-auto rounded-xl p-4">
                 <div className="mb-4 flex justify-end">
                     <Link href={products.create()}>
-                        <Button>+ Create New </Button>
+                        01<Button>+ Create New </Button>
                     </Link>
                 </div>
 
                 <div className="overflow-hidden rounded-md border">
-                    <Table>
+                    <Table className="table-fixed">
                         <TableHeader>
                             <TableRow>
-                                <TableHead>ID</TableHead>
+                                <TableHead className="w-[100px]">ID</TableHead>
                                 <TableHead>Category </TableHead>
                                 <TableHead>Name</TableHead>
                                 <TableHead>Prise</TableHead>

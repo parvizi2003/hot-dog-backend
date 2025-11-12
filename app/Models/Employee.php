@@ -26,8 +26,13 @@ class Employee extends Model
      */
     public function orders()
     {
-        return $this->belongsToMany(Order::class, 'employee_order')
-            ->withTimestamps()
-            ->withPivot('status'); // если нужно хранить статус выполнения конкретного заказа
+        return $this->belongsToMany(
+            Order::class,
+            'cook_orders',    // Имя pivot таблицы
+            'cook_id',        // pivot колонка, указывающая на employee (this)
+            'order_id'        // pivot колонка, указывающая на order
+        )
+            ->withPivot('accepted_at', 'completed_at')
+            ->withTimestamps();
     }
 }

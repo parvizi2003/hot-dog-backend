@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CartController;
 use App\Http\Controllers\Api\CategoryController;
+use App\Http\Controllers\Api\CookOrderController;
 use App\Http\Controllers\Api\OrderController;
 use Illuminate\Support\Facades\Route;
 
@@ -25,10 +26,17 @@ Route::controller(CartController::class)->middleware('auth:sanctum')->prefix('ca
     Route::delete('/items/{cartItem}', 'destroyItem');
 });
 
+Route::controller(CookOrderController::class)->middleware('auth:sanctum')->prefix('cook/orders')->group(function () {
+    Route::get('/', 'index');
+    Route::get('/pending', 'pendingOrder');
+    Route::get('/accepted', 'acceptedOrder');
+    Route::post('/{order}/accept', 'acceptOrder');
+    Route::post('/{order}/finish', 'finishOrder');
+});
+
+
 Route::controller(OrderController::class)->middleware('auth:sanctum')->prefix('orders')->group(function () {
     Route::get('/', 'index');
     Route::post('/store', 'store');
-    Route::get('/cook', 'cookOrders');
-    Route::post('/{order}/accept', 'cookAcceptOrder');
     Route::get('/{order}', 'show');
 });

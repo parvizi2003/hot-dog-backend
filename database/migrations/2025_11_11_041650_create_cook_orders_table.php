@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Employee;
+use App\Models\Order;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -12,10 +14,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('cook_order', function (Blueprint $table) {
+        Schema::create('cook_orders', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(User::class, 'cook_id')->nullable()->constrained('users')->nullOnDelete();
-            $table->foreignId('order_id')->constrained('orders');
+            $table->foreignIdFor(Employee::class, 'cook_id')->nullable()->constrained('employees')->nullOnDelete();
+            $table->foreignIdFor(Order::class)->constrained('orders');
             $table->timestamp('accepted_at')->nullable();
             $table->timestamp('completed_at')->nullable();
             $table->timestamps();

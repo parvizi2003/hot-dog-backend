@@ -61,4 +61,9 @@ class User extends Authenticatable
     {
         return $this->roles->first()?->name ?? null;
     }
+
+    public function employee()
+    {
+        return $this->hasOne(Employee::class);
+    }
 }

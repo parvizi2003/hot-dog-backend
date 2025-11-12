@@ -77,18 +77,6 @@ class OrderController extends Controller
         return $order->load('items');
     }
 
-    public function cookOrders()
-    {
-        $oldestPendingOrder = Order::where('status', OrderStatusEnum::PENDING)
-            ->orderBy('created_at')
-            ->first();
-        if ($oldestPendingOrder) {
-            return $oldestPendingOrder->load('items');
-        } else {
-            return ["message" => "No pending orders yet."];
-        }
-    }
-
     public function cookAcceptOrder(Order $order)
     {
         $updated = Order::where('id', $order->id)
